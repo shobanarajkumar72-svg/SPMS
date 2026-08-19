@@ -1,0 +1,90 @@
+.dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.card-link {
+    font-size: 13px;
+    color: #667eea;
+    text-decoration: none;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+.app-row,
+.drive-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.app-row:last-child,
+.drive-row:last-child {
+    border-bottom: none;
+}
+
+.drive-row {
+    gap: 10px;
+}
+
+.drive-icon {
+    font-size: 20px;
+}
+
+.app-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+}
+
+.app-sub {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+.empty-mini {
+    text-align: center;
+    padding: 20px;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.progress-bar {
+    background: #f3f4f6;
+    border-radius: 10px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 10px;
+    transition: width 0.6s;
+}
+
+@media (max-width: 640px) {
+    .dash-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,219 @@
+<div class="reports-page">
+
+  <!-- ================= Header ================= -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Placement Reports</h1>
+      <p>Analyze placement statistics and company insights</p>
+    </div>
+
+
+    <button 
+      class="export-btn"
+      (click)="exportCSV()">
+
+      Export CSV
+
+    </button>
+
+  </div>
+
+
+
+  <!-- ================= Summary Cards ================= -->
+
+  <div class="stats-container">
+
+
+    <div class="stat-card">
+
+      <div class="icon">
+        👨‍🎓
+      </div>
+
+      <div>
+        <h2>{{totalStudentsPlaced}}</h2>
+        <p>Students Placed</p>
+      </div>
+
+    </div>
+
+
+
+
+    <div class="stat-card">
+
+      <div class="icon">
+        🏢
+      </div>
+
+      <div>
+        <h2>{{totalCompaniesVisited}}</h2>
+        <p>Companies Visited</p>
+      </div>
+
+    </div>
+
+
+
+
+    <div class="stat-card">
+
+      <div class="icon">
+        💰
+      </div>
+
+      <div>
+        <h2>{{highestPackage}} LPA</h2>
+        <p>Highest Package</p>
+      </div>
+
+    </div>
+
+
+
+
+    <div class="stat-card">
+
+      <div class="icon">
+        📊
+      </div>
+
+      <div>
+        <h2>{{averagePackage | number:'1.1-2'}} LPA</h2>
+        <p>Average Package</p>
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+
+  <!-- ================= Charts ================= -->
+
+
+  <div class="charts-container">
+
+
+    <!-- Department Chart -->
+
+
+    <div class="chart-card">
+
+
+      <h2>
+        Department Wise Placement
+      </h2>
+
+
+      <div class="chart-box">
+
+
+        <canvas
+          baseChart
+          [data]="departmentChartData"
+          [options]="departmentChartOptions"
+          [type]="'bar'">
+
+        </canvas>
+
+
+      </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- Company Chart -->
+
+
+    <div class="chart-card">
+
+
+      <h2>
+        Company Wise Placement
+      </h2>
+
+
+
+      <div class="chart-box">
+
+
+        <canvas
+          baseChart
+          [data]="companyChartData"
+          [options]="companyChartOptions"
+          [type]="'doughnut'">
+
+        </canvas>
+
+
+      </div>
+
+
+    </div>
+    <!-- Placement Table -->
+
+<div class="table-card">
+
+  <h2>Placed Students List</h2>
+
+  <div class="table-wrapper">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Register No</th>
+          <th>Department</th>
+          <th>Company</th>
+          <th>Role</th>
+          <th>Package</th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+
+        <tr *ngFor="let student of placementsList">
+
+          <td>{{student.studentName}}</td>
+
+          <td>{{student.registerNumber}}</td>
+
+          <td>{{student.department}}</td>
+
+          <td>{{student.companyName}}</td>
+
+          <td>{{student.jobRole}}</td>
+
+          <td>{{student.packageLPA}} LPA</td>
+
+        </tr>
+
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+
+</div>

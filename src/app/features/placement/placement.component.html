@@ -1,0 +1,219 @@
+<div class="placement-page">
+
+  <!-- ============ Header ============ -->
+  <header class="page-header">
+    <div>
+      <h1>Placement Management</h1>
+      <p class="subtitle">Track offers, packages and joining status across the batch.</p>
+    </div>
+
+    <button
+      *ngIf="isAdmin()"
+      mat-flat-button
+      color="primary"
+      class="add-btn"
+      (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Add Placement
+    </button>
+  </header>
+
+  <!-- ============ Dashboard cards ============ -->
+  <section class="stats-grid">
+    <mat-card class="stat-card">
+      <div class="stat-icon total"><mat-icon>groups</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Total Placements</span>
+        <span class="stat-value">{{ totalPlacements() }}</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-icon highest"><mat-icon>military_tech</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Highest Package</span>
+        <span class="stat-value">{{ highestPackage() }} <small>LPA</small></span>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-icon average"><mat-icon>trending_up</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Average Package</span>
+        <span class="stat-value">{{ averagePackage() }} <small>LPA</small></span>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-icon companies"><mat-icon>apartment</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Companies Visited</span>
+        <span class="stat-value">{{ companiesVisited() }}</span>
+      </div>
+    </mat-card>
+  </section>
+
+  <!-- ============ Toolbar: search + filters + sort ============ -->
+  <mat-card class="toolbar-card">
+    <div class="toolbar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search student</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          placeholder="Name or register number"
+          [ngModel]="searchText()"
+          (ngModelChange)="onSearchChange($event)">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Company</mat-label>
+        <mat-select [ngModel]="companyFilter()" (ngModelChange)="companyFilter.set($event)">
+          <mat-option value="all">All companies</mat-option>
+          <mat-option *ngFor="let c of companyOptions()" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Department</mat-label>
+        <mat-select [ngModel]="departmentFilter()" (ngModelChange)="departmentFilter.set($event)">
+          <mat-option value="all">All departments</mat-option>
+          <mat-option *ngFor="let d of departmentOptions()" [value]="d">{{ d }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Batch</mat-label>
+        <mat-select [ngModel]="batchFilter()" (ngModelChange)="batchFilter.set($event)">
+          <mat-option value="all">All batches</mat-option>
+          <mat-option *ngFor="let b of batchOptions()" [value]="b">{{ b }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-stroked-button class="sort-btn" (click)="toggleSort()">
+        <mat-icon>
+          {{ sortDirection() === 'asc' ? 'arrow_upward' : sortDirection() === 'desc' ? 'arrow_downward' : 'swap_vert' }}
+        </mat-icon>
+        Sort by Package
+      </button>
+
+      <button mat-button class="reset-btn" (click)="resetFilters()">
+        <mat-icon>restart_alt</mat-icon>
+        Reset
+      </button>
+    </div>
+  </mat-card>
+
+  <!-- ============ Table ============ -->
+  <mat-card class="table-card">
+    <div class="table-scroll" *ngIf="filteredPlacements().length; else emptyState">
+      <table mat-table [dataSource]="filteredPlacements()" [trackBy]="trackById" class="placement-table">
+
+        <ng-container matColumnDef="studentName">
+          <th mat-header-cell *matHeaderCellDef>Student Name</th>
+          <td mat-cell *matCellDef="let row" data-label="Student Name">{{ row.studentName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="registerNumber">
+          <th mat-header-cell *matHeaderCellDef>Register Number</th>
+          <td mat-cell *matCellDef="let row" data-label="Register No.">{{ row.registerNumber }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef>Department</th>
+          <td mat-cell *matCellDef="let row" data-label="Department">{{ row.department }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="companyName">
+          <th mat-header-cell *matHeaderCellDef>Company</th>
+          <td mat-cell *matCellDef="let row" data-label="Company">{{ row.companyName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="jobRole">
+          <th mat-header-cell *matHeaderCellDef>Job Role</th>
+          <td mat-cell *matCellDef="let row" data-label="Job Role">{{ row.jobRole }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="packageLPA">
+          <th mat-header-cell *matHeaderCellDef>Package (LPA)</th>
+          <td mat-cell *matCellDef="let row" data-label="Package">{{ row.packageLPA }} LPA</td>
+        </ng-container>
+
+        <ng-container matColumnDef="placementDate">
+          <th mat-header-cell *matHeaderCellDef>Placement Date</th>
+          <td mat-cell *matCellDef="let row" data-label="Date">{{ row.placementDate | date:'dd MMM yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let row" data-label="Status">
+            <mat-chip [class]="statusChipClass(row.status)" disableRipple>{{ row.status }}</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-col">Actions</th>
+          <td mat-cell *matCellDef="let row" data-label="Actions" class="actions-col">
+            <div class="actions-cell">
+
+              <button mat-icon-button matTooltip="View details" (click)="viewDetails(row)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+
+              <!-- Admin -->
+              <ng-container *ngIf="isAdmin()">
+                <button mat-icon-button matTooltip="Edit placement" (click)="openEditDialog(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Delete placement" color="warn" (click)="deletePlacement(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+
+              <!-- Company -->
+              <ng-container *ngIf="isCompany()">
+                <button
+                  mat-icon-button
+                  matTooltip="Mark as Selected"
+                  [disabled]="row.status !== 'Pending'"
+                  (click)="markSelected(row)">
+                  <mat-icon>how_to_reg</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Update joining status" (click)="updateJoiningStatus(row)">
+                  <mat-icon>fact_check</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Upload offer letter" (click)="uploadOfferLetter(row)">
+                  <mat-icon>upload_file</mat-icon>
+                </button>
+              </ng-container>
+
+              <!-- Student -->
+              <ng-container *ngIf="isStudent()">
+                <button
+                  mat-icon-button
+                  matTooltip="Download offer letter"
+                  [disabled]="!canDownloadOfferLetter(row)"
+                  (click)="downloadOfferLetter(row)">
+                  <mat-icon>download</mat-icon>
+                </button>
+              </ng-container>
+
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+      </table>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <mat-icon>search_off</mat-icon>
+        <h3>No placement records found</h3>
+        <p>Try adjusting your search or filters.</p>
+      </div>
+    </ng-template>
+  </mat-card>
+
+</div>

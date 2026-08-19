@@ -1,0 +1,200 @@
+.settings-page {
+  padding: 30px;
+  background: #f5f7fb;
+  min-height: 100vh;
+
+  h2 {
+    margin-bottom: 25px;
+    font-size: 30px;
+    color: #222;
+    font-weight: 700;
+  }
+}
+
+// Tabs
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+
+  button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    background: #e5e7eb;
+    color: #555;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
+
+    &:hover {
+      background: #d1d5db;
+    }
+
+    &.active {
+      background: #4f46e5;
+      color: white;
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.3);
+    }
+  }
+}
+
+// Save Message
+.save-msg {
+  background: #dcfce7;
+  color: #166534;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+// Card
+.tab-content {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+// Forms
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+  }
+
+  input {
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: 0.3s;
+    outline: none;
+
+    &:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+  }
+}
+
+// Save Button
+.save-btn {
+  margin-top: 30px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.3s;
+
+  &:hover {
+    background: #3730a3;
+    transform: translateY(-2px);
+  }
+}
+
+// Notification Toggles
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+
+  span {
+    color: #333;
+    font-weight: 500;
+  }
+}
+
+// Switch
+.switch {
+  position: relative;
+  width: 55px;
+  height: 28px;
+  display: inline-block;
+
+  input {
+    display: none;
+  }
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #ccc;
+  border-radius: 30px;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: .3s;
+}
+
+.switch input:checked + .slider {
+  background: #4f46e5;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(27px);
+}
+
+// Responsive
+@media (max-width: 768px) {
+
+  .settings-page {
+    padding: 20px;
+  }
+
+  .tabs {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .tab-content {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toggle-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .save-btn {
+    width: 100%;
+  }
+}

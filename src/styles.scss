@@ -1,0 +1,628 @@
+@use '@angular/material' as mat;
+
+
+html {
+
+    @include mat.theme((color:(primary: mat.$azure-palette,
+                tertiary: mat.$blue-palette ),
+            typography: Roboto,
+            density:0));
+
+}
+
+
+body {
+
+    margin: 0;
+    font-family: "Inter", sans-serif !important;
+
+}
+
+/* Global shared styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1a1a2e;
+}
+
+/* Form controls */
+.form-control {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fff;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+}
+
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 5px;
+}
+
+.form-group {
+    margin-bottom: 0px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #5a6fd8;
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+.btn-danger {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.btn-danger:hover {
+    background: #fee2e2;
+}
+
+.btn-outline {
+    background: #fff;
+    color: #374151;
+    border: 1.5px solid #e5e7eb;
+}
+
+.btn-outline:hover {
+    background: #f9fafb;
+}
+
+.btn-success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+}
+
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 13px;
+}
+
+/* Cards */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-blue {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-green {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-yellow {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-red {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.badge-gray {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.badge-purple {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+/* Page layout */
+.page {
+    padding: 24px;
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+/* Filter bar */
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+}
+
+.search-box .form-control {
+    padding-left: 32px;
+}
+
+/* Stats grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px 20px;
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+/* Table */
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+td {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #374151;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background: #f9fafb;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.modal-body {
+    padding: 20px 24px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 4px;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+/* Alert */
+.alert {
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+}
+
+.alert-error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.alert-info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+@media (max-width: 600px) {
+    .page {
+        padding: 16px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.error {
+
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+    height: 30px;
+
+}
+
+
+.input-field-plain.ng-invalid.ng-touched {
+
+    border: 1px solid #dc2626;
+
+}
+
+/* ==========================================================================
+   Custom Angular Material Input/Dropdown Style
+   Matches: rounded, light-gray, borderless look (like screenshot)
+   Add this file content into your global styles.scss
+   ========================================================================== */
+
+/* 1. Use 'fill' appearance everywhere by default (set this in code too, see below) */
+
+.mat-mdc-form-field {
+    width: 100%;
+}
+
+/* 2. Remove the default underline / ripple bar */
+.mat-mdc-form-field-flex {
+    align-items: center;
+}
+
+.mdc-line-ripple,
+.mdc-line-ripple::before,
+.mdc-line-ripple::after {
+    display: none !important;
+}
+
+/* 3. The actual input "box" styling */
+.mat-mdc-text-field-wrapper {
+    background-color: #f6f7f9 !important;
+    /* light gray bg like image */
+    border-radius: 10px !important;
+    border: 1px solid #e4e6eb;
+    padding: 0 12px !important;
+    height: 48px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mat-mdc-text-field-wrapper:hover {
+    border-color: #c9cdd4;
+}
+
+/* Focused state */
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    border-color: #6366f1;
+    /* change to your brand color */
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    background-color: #ffffff !important;
+}
+
+/* 4. Remove the default fill bg gradient mat puts on appearance="fill" */
+.mdc-text-field--filled {
+    background-color: transparent !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent !important;
+}
+
+/* 5. Placeholder + label */
+.mat-mdc-form-field .mdc-floating-label,
+.mat-mdc-form-field input::placeholder {
+    color: #9aa0a8 !important;
+    font-size: 14px;
+}
+
+/* Hide the floating label animation if you want a static placeholder-only look
+   (like the screenshot, label sits ABOVE the box separately) */
+.mat-mdc-form-field-infix {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+    min-height: unset !important;
+}
+
+/* 6. Prefix / Suffix icons (mail icon, lock icon, eye icon) */
+.mat-mdc-form-field-icon-prefix,
+.mat-mdc-form-field-icon-suffix {
+    color: #9aa0a8;
+    display: flex;
+    align-items: center;
+}
+
+.mat-mdc-form-field-icon-suffix button {
+    color: #9aa0a8;
+}
+
+/* 7. Subscript wrapper (error/hint area) - keep space for error text */
+.mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0px;
+}
+
+/* ==========================================================================
+   ERROR STATE STYLING
+   ========================================================================== */
+
+/* Invalid field box - red border + light red bg tint */
+.mat-mdc-form-field.mat-form-field-invalid .mat-mdc-text-field-wrapper {
+    border-color: #e5484d !important;
+    background-color: #fff5f5 !important;
+}
+
+.mat-mdc-form-field.mat-form-field-invalid.mat-focused .mat-mdc-text-field-wrapper {
+    border-color: #e5484d !important;
+    box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.15) !important;
+}
+
+/* Error message text */
+.mat-mdc-form-field-error,
+mat-error {
+    color: #e5484d !important;
+    font-size: 12.5px !important;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+/* Small warning icon before error message */
+mat-error::before {
+    content: "⚠";
+    font-size: 12px;
+}
+
+/* Invalid icon prefix/suffix color match */
+.mat-mdc-form-field.mat-form-field-invalid .mat-mdc-form-field-icon-prefix,
+.mat-mdc-form-field.mat-form-field-invalid .mat-mdc-form-field-icon-suffix {
+    color: #e5484d;
+}
+
+/* Remove extra padding mat adds in subscript area */
+.mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-hint-wrapper,
+.mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-error-wrapper {
+    padding: 0;
+}
+
+/* 8. Label ABOVE the field (Email / Password bold text like image) */
+.field-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1f2329;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* ==========================================================================
+   DROPDOWN (mat-select) - same rounded/gray style
+   ========================================================================== */
+
+.mat-mdc-select {
+    display: flex;
+    align-items: center;
+}
+
+.mat-mdc-select .mat-mdc-select-trigger {
+    height: 100%;
+}
+
+.mat-mdc-select-arrow {
+    color: #9aa0a8 !important;
+}
+
+/* Dropdown panel (options list) */
+.mat-mdc-select-panel {
+    border-radius: 10px !important;
+    padding: 6px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mat-mdc-option {
+    border-radius: 8px !important;
+    margin-bottom: 2px;
+}
+
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+    background-color: #eef0ff !important;
+}
+
+/* ==========================================================================
+   TEXTAREA - same style auto inherits from .mat-mdc-text-field-wrapper
+   ========================================================================== */
+
+textarea.mat-mdc-input-element {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* ==========================================================================
+   FULL WIDTH FIELDS (Skills, Status, Address etc.)
+   ========================================================================== */
+
+.full-width,
+.custom-field.full-width {
+    width: 100%;
+}

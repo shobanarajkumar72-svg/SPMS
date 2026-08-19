@@ -1,0 +1,116 @@
+<!-- pages/students/students.component.html -->
+<div class="page-container">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">
+                Students
+            </h1>
+            <p class="page-sub">
+                Manage all registered students
+            </p>
+        </div>
+        <button class="btn-primary" (click)="openAdd()" *ngIf="auth.isAdmin()">
+            + Add Student
+        </button>
+    </div>
+    <!-- Filters -->
+    <div class="filters-bar">
+        <input class="search-input" type="text" placeholder="🔍 Search name, email, department..."
+            [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()">
+        <select class="filter-select" [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()">
+            <option value="">
+                All Status
+            </option>
+            <option value="available">
+                Available
+            </option>
+            <option value="placed">
+                Placed
+            </option>
+            <option value="not_eligible">
+                Not Eligible
+            </option>
+        </select>
+        <select class="filter-select" [(ngModel)]="filterDept" (ngModelChange)="applyFilters()">
+            <option value="">
+                All Departments
+            </option>
+            <option *ngFor="let d of departments" [value]="d">
+                {{d}}
+            </option>
+        </select>
+        <span class="results-count">
+            {{filtered.length}} students
+        </span>
+    </div>
+    <!-- Table -->
+    <div class="section-card">
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Dept</th>
+                        <th>Batch</th>
+                        <th>CGPA</th>
+                        <th>Skills</th>
+                        <th>Status</th>
+                        <th *ngIf="auth.isAdmin()">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let s of filtered">
+                        <td>
+                            <strong>
+                                {{s.name}}
+                            </strong>
+                        </td>
+                        <td>
+                            {{s.email}}
+                        </td>
+                        <td>
+                            {{s.department}}
+                        </td>
+                        <td>
+                            {{s.batch}}
+                        </td>
+                        <td>
+                            {{s.cgpa}}
+                        </td>
+                        <td>
+                            <div class="tags">
+                                <span class="tag" *ngFor="let sk of s.skills.slice(0,3)">
+                                    {{sk}}
+                                </span>
+                                <span class="tag gray" *ngIf="s.skills.length > 3">
+                                    +{{s.skills.length-3}}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge" [ngClass]="getStatusClass(s.status)">
+                                {{s.status}}
+                            </span>
+                        </td>
+                        <td *ngIf="auth.isAdmin()">
+                            <button class="icon-btn" (click)="openEdit(s)">
+                                ✏️
+                            </button>
+                            <button class="icon-btn danger" (click)="delete(s.id)">
+                                🗑️
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!filtered.length">
+                        <td colspan="8" class="empty-row">
+                            No students found.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

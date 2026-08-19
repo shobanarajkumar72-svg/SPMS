@@ -1,0 +1,244 @@
+:host {
+  display: block;
+  background: #f4f7fb;
+  min-height: 100vh;
+  padding: 35px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+/* Main Card */
+
+.profile-card {
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
+
+/* Header */
+
+.profile-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:35px;
+}
+
+.user{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.avatar{
+  width:75px;
+  height:75px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#4f46e5,#6366f1);
+  color:#fff;
+  font-size:28px;
+  font-weight:700;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.user h2{
+  margin:0;
+  font-size:28px;
+  font-weight:700;
+  color:#1e293b;
+}
+
+.user p{
+  margin:6px 0 0;
+  color:#64748b;
+  font-size:15px;
+}
+
+.status{
+  padding:8px 20px;
+  border-radius:30px;
+  font-weight:600;
+  font-size:14px;
+  color:#fff;
+}
+
+.status.available{
+  background:#0ea5e9;
+}
+
+.status.selected{
+  background:#f59e0b;
+}
+
+.status.placed{
+  background:#16a34a;
+}
+
+.status.rejected{
+  background:#ef4444;
+}
+
+/* Information */
+
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:25px;
+  margin-top:25px;
+}
+
+.info-box{
+  background:#fafbff;
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:25px;
+}
+
+.info-box h3{
+  margin:0 0 20px;
+  color:#4f46e5;
+  font-size:21px;
+  border-bottom:2px solid #4f46e5;
+  display:inline-block;
+  padding-bottom:6px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  padding:13px 0;
+  border-bottom:1px solid #edf2f7;
+}
+
+.row:last-child{
+  border-bottom:none;
+}
+
+.row label{
+  color:#64748b;
+  font-weight:600;
+}
+
+.row span{
+  color:#111827;
+  font-weight:500;
+}
+
+/* Skills */
+
+.skills-card{
+  margin-top:30px;
+  background:#fafbff;
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:25px;
+}
+
+.skills-card h3{
+  color:#4f46e5;
+  margin-bottom:18px;
+}
+
+.skills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+.skill{
+  background:#eef2ff;
+  color:#4338ca;
+  padding:10px 18px;
+  border-radius:25px;
+  font-size:14px;
+  font-weight:600;
+  transition:.3s;
+}
+
+.skill:hover{
+  background:#4f46e5;
+  color:white;
+  transform:translateY(-2px);
+}
+
+/* Resume */
+
+.resume-card{
+  margin-top:30px;
+  background:#fafbff;
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  padding:25px;
+}
+
+.resume-card h3{
+  color:#4f46e5;
+  margin-bottom:20px;
+}
+
+.resume-box{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+}
+
+.resume-name{
+  font-size:17px;
+  font-weight:600;
+}
+
+.resume-date{
+  color:#64748b;
+  margin-top:5px;
+  font-size:14px;
+}
+
+.resume-btns{
+  display:flex;
+  gap:15px;
+}
+
+.resume-btns button{
+  border:none;
+  background:#4f46e5;
+  color:white;
+  padding:10px 22px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.3s;
+}
+
+.resume-btns button:hover{
+  background:#3730a3;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+  .info-grid{
+    grid-template-columns:1fr;
+  }
+
+  .profile-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:20px;
+  }
+
+  .resume-box{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:20px;
+  }
+
+}

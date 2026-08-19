@@ -1,0 +1,1463 @@
+<!-- =====================================================
+     PAGE HEADER
+====================================================== -->
+
+<div class="page-header">
+
+  <div>
+    <h1>Job Opportunities</h1>
+
+    <p>
+      Explore and manage available job opportunities.
+    </p>
+  </div>
+
+  <button
+    class="btn-primary"
+    *ngIf="auth.isAdmin() || auth.isCompany()"
+    (click)="openAddModal()">
+
+    + Post Job
+
+  </button>
+
+</div>
+
+
+<!-- =====================================================
+     SEARCH + FILTER
+====================================================== -->
+
+<div class="jobs-toolbar">
+
+  <div class="search-box">
+
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2">
+
+      <circle
+        cx="11"
+        cy="11"
+        r="8">
+      </circle>
+
+      <path
+        d="m21 21-4.35-4.35">
+      </path>
+
+    </svg>
+
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchChange()"
+      placeholder="Search jobs, companies or locations..." />
+
+  </div>
+
+
+  <div class="filter-tabs">
+
+    <button
+      *ngFor="let opt of statusOptions"
+      class="filter-tab"
+      [class.active]="statusFilter === opt.value"
+      (click)="statusFilter = opt.value; onStatusFilterChange()">
+
+      {{ opt.label }}
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     JOB COUNT
+====================================================== -->
+
+<div class="jobs-count">
+
+  <span>
+
+    {{ jobs.length }}
+
+    {{ jobs.length === 1 ? 'job' : 'jobs' }}
+
+    found
+
+  </span>
+
+</div>
+
+
+<!-- =====================================================
+     JOB LIST
+====================================================== -->
+
+<div
+  class="jobs-grid"
+  *ngIf="jobs.length > 0">
+
+  <div
+    class="job-card"
+    *ngFor="let j of jobs">
+
+
+    <!-- =================================================
+         CARD TOP
+    ================================================== -->
+
+    <div class="card-top">
+
+      <div class="company-logo">
+
+        {{ getInitials(j.companyName) }}
+
+      </div>
+
+
+      <!-- ADMIN ACTIONS -->
+
+      <div
+        class="card-actions"
+        *ngIf="auth.isAdmin()">
+
+        <!-- EDIT -->
+
+        <button
+          type="button"
+          class="icon-btn"
+          (click)="openEditModal(j)"
+          title="Edit">
+
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2">
+
+            <path
+              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
+            </path>
+
+            <path
+              d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
+            </path>
+
+          </svg>
+
+        </button>
+
+
+        <!-- DELETE -->
+
+        <button
+          type="button"
+          class="icon-btn icon-btn-danger"
+          (click)="confirmDelete(j.id)"
+          title="Delete">
+
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2">
+
+            <polyline
+              points="3 6 5 6 21 6">
+            </polyline>
+
+            <path
+              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6">
+            </path>
+
+            <path
+              d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+            </path>
+
+          </svg>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TITLE
+    ================================================== -->
+
+    <div class="title-row">
+
+      <h3 class="job-title">
+
+        {{ j.title }}
+
+      </h3>
+
+
+      <span
+        class="status-badge"
+        [ngClass]="'status-' + j.status"
+        (click)="auth.isAdmin() ? toggleStatus(j) : null"
+        [class.clickable]="auth.isAdmin()">
+
+        {{ j.status }}
+
+      </span>
+
+    </div>
+
+
+    <!-- =================================================
+         COMPANY
+    ================================================== -->
+
+    <span class="job-company">
+
+      {{ j.companyName }}
+
+    </span>
+
+
+    <!-- =================================================
+         TAGS
+    ================================================== -->
+
+    <div class="tag-row">
+
+      <span class="tag tag-type">
+
+        {{ j.type }}
+
+      </span>
+
+
+      <span
+        class="tag tag-package"
+        *ngIf="j.salary">
+
+        {{ j.salary }}
+
+      </span>
+
+
+      <span
+        class="tag tag-expired"
+        *ngIf="isExpired(j)">
+
+        Expired
+
+      </span>
+
+    </div>
+
+
+    <!-- =================================================
+         DESCRIPTION
+    ================================================== -->
+
+    <p class="job-desc">
+
+      {{ j.description || 'No description provided.' }}
+
+    </p>
+
+
+    <div class="card-divider"></div>
+
+
+    <!-- =================================================
+         JOB INFORMATION
+    ================================================== -->
+
+    <div class="job-info">
+
+
+      <!-- LOCATION -->
+
+      <div
+        class="info-row"
+        *ngIf="j.location">
+
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <path
+            d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z">
+          </path>
+
+          <circle
+            cx="12"
+            cy="10"
+            r="3">
+          </circle>
+
+        </svg>
+
+        <span>
+
+          {{ j.location }}
+
+        </span>
+
+      </div>
+
+
+      <!-- CGPA -->
+
+      <div class="info-row">
+
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <path
+            d="M22 10l-10-5-10 5 10 5 10-5z">
+          </path>
+
+          <path
+            d="M6 12v5c3 3 9 3 12 0v-5">
+          </path>
+
+        </svg>
+
+        <span>
+
+          Min CGPA: {{ j.minCgpa }}
+
+        </span>
+
+      </div>
+
+
+      <!-- SKILLS -->
+
+      <div
+        class="info-row"
+        *ngIf="j.skills?.length">
+
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <path
+            d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+          </path>
+
+        </svg>
+
+        <span>
+
+          {{ j.skills.join(', ') }}
+
+        </span>
+
+      </div>
+
+
+      <!-- BATCH -->
+
+      <div
+        class="info-row"
+        *ngIf="j.eligibleBatches?.length">
+
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <path
+            d="M12 2L2 7l10 5 10-5 10-5z">
+          </path>
+
+          <path
+            d="M2 17l10 5 10-5M2 12l10 5 10-5">
+          </path>
+
+        </svg>
+
+        <span>
+
+          Batch:
+          {{ j.eligibleBatches.join(', ') }}
+
+        </span>
+
+      </div>
+
+
+      <!-- DEADLINE -->
+
+      <div class="info-row">
+
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <rect
+            x="3"
+            y="4"
+            width="18"
+            height="18"
+            rx="2">
+          </rect>
+
+          <line
+            x1="16"
+            y1="2"
+            x2="16"
+            y2="6">
+          </line>
+
+          <line
+            x1="8"
+            y1="2"
+            x2="8"
+            y2="6">
+          </line>
+
+          <line
+            x1="3"
+            y1="10"
+            x2="21"
+            y2="10">
+          </line>
+
+        </svg>
+
+        <span>
+
+          Apply by
+          {{ j.deadline | date:'mediumDate' }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         STUDENT APPLY BUTTON
+    ================================================== -->
+
+    <div
+      class="job-actions"
+      *ngIf="auth.isStudent()">
+
+      <button
+        type="button"
+        class="btn-apply"
+        (click)="applyJob(j)"
+        [disabled]="
+          j.status === 'closed' ||
+          isExpired(j)
+        ">
+
+        {{
+          j.status === 'closed' || isExpired(j)
+            ? 'Not Available'
+            : 'Apply Now'
+        }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     EMPTY STATE
+====================================================== -->
+
+<div
+  class="empty-state"
+  *ngIf="jobs.length === 0">
+
+  <div class="empty-icon">
+    💼
+  </div>
+
+  <h3>
+    No jobs found
+  </h3>
+
+  <p>
+
+    {{
+      searchTerm || statusFilter !== 'all'
+        ? 'Try a different search or filter.'
+        : 'Post your first job opening to get started.'
+    }}
+
+  </p>
+
+
+  <button
+    class="btn-primary"
+    *ngIf="
+      !searchTerm &&
+      statusFilter === 'all' &&
+      (auth.isAdmin() || auth.isCompany())
+    "
+    (click)="openAddModal()">
+
+    + Post Job
+
+  </button>
+
+</div>
+
+
+<!-- =====================================================
+     ADD / EDIT JOB MODAL
+====================================================== -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showModal">
+
+  <div
+    class="job-modal"
+    (click)="$event.stopPropagation()">
+
+
+    <!-- HEADER -->
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+
+          {{
+            isEditMode
+              ? 'Edit Job'
+              : 'Post New Job'
+          }}
+
+        </h2>
+
+        <p>
+
+          {{
+            isEditMode
+              ? 'Update job opportunity details.'
+              : 'Create a new job opportunity.'
+          }}
+
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="modal-close"
+        (click)="closeModal()">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <!-- BODY -->
+
+    <div class="modal-body">
+
+      <div class="form-grid">
+
+
+        <!-- COMPANY -->
+
+        <div class="form-group full">
+
+          <label>
+
+            Company
+
+            <span class="req">*</span>
+
+          </label>
+
+          <select
+            [(ngModel)]="formData.companyId"
+            (ngModelChange)="onCompanyChange()"
+            [disabled]="auth.isCompany()">
+
+            <option
+              value=""
+              disabled>
+
+              Select company
+
+            </option>
+
+            <option
+              *ngFor="let c of companies"
+              [value]="c.id">
+
+              {{ c.name }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="form-group full">
+
+          <label>
+
+            Job Title
+
+            <span class="req">*</span>
+
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="formData.title"
+            placeholder="e.g. Software Engineer">
+
+        </div>
+
+
+        <!-- TYPE -->
+
+        <div class="form-group">
+
+          <label>
+            Job Type
+          </label>
+
+          <select
+            [(ngModel)]="formData.type">
+
+            <option
+              *ngFor="let t of jobTypes"
+              [value]="t">
+
+              {{ t }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- SALARY -->
+
+        <div class="form-group">
+
+          <label>
+            Salary
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="formData.salary"
+            placeholder="e.g. 6 LPA">
+
+        </div>
+
+
+        <!-- LOCATION -->
+
+        <div class="form-group">
+
+          <label>
+            Location
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="formData.location"
+            placeholder="e.g. Bangalore">
+
+        </div>
+
+
+        <!-- CGPA -->
+
+        <div class="form-group">
+
+          <label>
+            Minimum CGPA
+          </label>
+
+          <input
+            type="number"
+            step="0.1"
+            min="0"
+            max="10"
+            [(ngModel)]="formData.minCgpa">
+
+        </div>
+
+
+        <!-- BATCH -->
+
+        <div class="form-group">
+
+          <label>
+            Eligible Batches
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="batchesInput"
+            placeholder="e.g. 2024, 2025">
+
+          <small class="hint">
+            Comma-separated
+          </small>
+
+        </div>
+
+
+        <!-- DEADLINE -->
+
+        <div class="form-group">
+
+          <label>
+
+            Deadline
+
+            <span class="req">*</span>
+
+          </label>
+
+          <input
+            type="date"
+            [(ngModel)]="formData.deadline">
+
+        </div>
+
+
+        <!-- SKILLS -->
+
+        <div class="form-group full">
+
+          <label>
+            Required Skills
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="skillsInput"
+            placeholder="e.g. Angular, Java, SQL">
+
+          <small class="hint">
+            Comma-separated
+          </small>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label>
+            Status
+          </label>
+
+          <select
+            [(ngModel)]="formData.status">
+
+            <option value="open">
+              Open
+            </option>
+
+            <option value="closed">
+              Closed
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group full">
+
+          <label>
+            Description
+          </label>
+
+          <textarea
+            [(ngModel)]="formData.description"
+            rows="4"
+            placeholder="Job description, responsibilities, requirements...">
+          </textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="modal-footer">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="closeModal()">
+
+        Cancel
+
+      </button>
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="saveJob()">
+
+        {{
+          isEditMode
+            ? 'Update Job'
+            : 'Post Job'
+        }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     DELETE CONFIRMATION MODAL
+====================================================== -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showDeleteConfirm">
+
+  <div
+    class="delete-modal"
+    (click)="$event.stopPropagation()">
+
+
+    <div class="delete-icon">
+      🗑️
+    </div>
+
+
+    <h3>
+      Delete Job?
+    </h3>
+
+
+    <p>
+
+      Are you sure you want to delete this job?
+
+      This action cannot be undone.
+
+    </p>
+
+
+    <div class="delete-actions">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="cancelDelete()">
+
+        Cancel
+
+      </button>
+
+
+      <button
+        type="button"
+        class="btn-danger"
+        (click)="performDelete()">
+
+        Delete
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     STUDENT APPLY MODAL
+====================================================== -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showApplyModal">
+
+  <div
+    class="apply-modal"
+    (click)="$event.stopPropagation()">
+
+
+    <!-- HEADER -->
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Apply for Job
+        </h2>
+
+        <p *ngIf="selectedJob">
+
+          {{ selectedJob.title }}
+
+          <span>
+            at {{ selectedJob.companyName }}
+          </span>
+
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="modal-close"
+        (click)="closeApplyModal()"
+        [disabled]="isSubmittingApplication">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <!-- BODY -->
+
+    <div class="modal-body">
+
+
+      <!-- JOB INFORMATION -->
+
+      <div class="application-section">
+
+        <h3>
+          Job Information
+        </h3>
+
+
+        <div
+          class="job-summary"
+          *ngIf="selectedJob">
+
+
+          <div class="summary-item">
+
+            <span class="summary-label">
+              Job Title
+            </span>
+
+            <strong>
+              {{ selectedJob.title }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-item">
+
+            <span class="summary-label">
+              Company
+            </span>
+
+            <strong>
+              {{ selectedJob.companyName }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-item">
+
+            <span class="summary-label">
+              Job Type
+            </span>
+
+            <strong>
+              {{ selectedJob.type }}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="summary-item"
+            *ngIf="selectedJob.salary">
+
+            <span class="summary-label">
+              Salary
+            </span>
+
+            <strong>
+              {{ selectedJob.salary }}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="summary-item"
+            *ngIf="selectedJob.location">
+
+            <span class="summary-label">
+              Location
+            </span>
+
+            <strong>
+              {{ selectedJob.location }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-item">
+
+            <span class="summary-label">
+              Apply Before
+            </span>
+
+            <strong>
+              {{ selectedJob.deadline | date:'mediumDate' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- STUDENT DETAILS -->
+
+      <div class="application-section">
+
+        <h3>
+          Student Details
+        </h3>
+
+
+        <div class="form-grid">
+
+
+          <!-- STUDENT NAME -->
+
+          <div class="form-group">
+
+            <label>
+
+              Student Name
+
+              <span class="req">*</span>
+
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="applicationForm.studentName"
+              placeholder="Enter student name">
+
+          </div>
+
+
+          <!-- REGISTER NUMBER -->
+
+          <div class="form-group">
+
+            <label>
+
+              Register Number
+
+              <span class="req">*</span>
+
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="applicationForm.registerNumber"
+              placeholder="Enter register number">
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label>
+
+              Email
+
+              <span class="req">*</span>
+
+            </label>
+
+            <input
+              type="email"
+              [(ngModel)]="applicationForm.email"
+              placeholder="Enter email address">
+
+          </div>
+
+
+          <!-- PHONE -->
+
+          <div class="form-group">
+
+            <label>
+
+              Phone Number
+
+              <span class="req">*</span>
+
+            </label>
+
+            <input
+              type="tel"
+              [(ngModel)]="applicationForm.phone"
+              placeholder="Enter phone number">
+
+          </div>
+
+
+          <!-- DEPARTMENT -->
+
+          <div class="form-group full">
+
+            <label>
+
+              Department
+
+              <span class="req">*</span>
+
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="applicationForm.department"
+              placeholder="e.g. Information Technology">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ADDITIONAL INFORMATION -->
+
+      <div class="application-section">
+
+        <h3>
+          Additional Information
+        </h3>
+
+
+        <div class="form-group full">
+
+          <label>
+            Cover Letter / Message
+          </label>
+
+          <textarea
+            rows="4"
+            [(ngModel)]="applicationForm.coverLetter"
+            placeholder="Write a short message to the company...">
+          </textarea>
+
+
+          <small class="hint">
+
+            Briefly explain why you are suitable for this job.
+
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- RESUME -->
+
+      <div class="application-section">
+
+        <h3>
+          Resume
+        </h3>
+
+
+        <div class="resume-upload-box">
+
+
+          <!-- UPLOAD -->
+
+          <label class="resume-upload">
+
+            <input
+              type="file"
+              hidden
+              accept=".pdf,.doc,.docx"
+              (change)="onResumeSelected($event)">
+
+
+            <div class="upload-icon">
+              📄
+            </div>
+
+
+            <strong>
+              Click to upload your resume
+            </strong>
+
+
+            <span>
+              PDF / DOC / DOCX — Maximum 5MB
+            </span>
+
+          </label>
+
+
+          <!-- SELECTED RESUME -->
+
+          <div
+            class="resume-file"
+            *ngIf="applicationForm.resumeName">
+
+
+            <div class="resume-file-info">
+
+              <div class="resume-file-icon">
+                📄
+              </div>
+
+
+              <div>
+
+                <strong>
+                  {{ applicationForm.resumeName }}
+                </strong>
+
+                <small>
+                  Resume uploaded successfully
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="resume-actions">
+
+
+              <!-- PREVIEW -->
+
+              <button
+                type="button"
+                class="btn-preview"
+                (click)="previewResume()">
+
+                Preview
+
+              </button>
+
+
+              <!-- REMOVE -->
+
+              <button
+                type="button"
+                class="btn-remove"
+                (click)="removeResume()">
+
+                Remove
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PDF PREVIEW -->
+
+      <div
+        class="resume-preview"
+        *ngIf="
+          resumePreviewUrl &&
+          resumePreviewType === 'application/pdf'
+        ">
+
+
+        <div class="preview-header">
+
+          <strong>
+            Resume Preview
+          </strong>
+
+
+          <button
+            type="button"
+            (click)="resumePreviewUrl = ''">
+
+            ×
+
+          </button>
+
+        </div>
+
+
+        <iframe
+          [src]="resumePreviewUrl"
+          title="Resume Preview">
+
+        </iframe>
+
+      </div>
+
+
+      <!-- WARNING -->
+
+      <div
+        class="application-warning"
+        *ngIf="!applicationForm.resumeData">
+
+        ⚠️ Resume upload is required to submit the application.
+
+      </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="modal-footer">
+
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="closeApplyModal()"
+        [disabled]="isSubmittingApplication">
+
+        Cancel
+
+      </button>
+
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="submitApplication()"
+        [disabled]="
+          !isApplicationFormValid() ||
+          isSubmittingApplication
+        ">
+
+
+        <span *ngIf="!isSubmittingApplication">
+
+          Submit Application
+
+        </span>
+
+
+        <span *ngIf="isSubmittingApplication">
+
+          Submitting...
+
+        </span>
+
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+====================================================== -->
+
+<div
+  class="toast"
+  *ngIf="showToast"
+  [ngClass]="'toast-' + toastType">
+
+  <span class="toast-icon">
+
+    {{ toastType === 'success' ? '✓' : '!' }}
+
+  </span>
+
+  <span>
+    {{ toastMsg }}
+  </span>
+
+</div>

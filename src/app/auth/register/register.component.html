@@ -1,0 +1,264 @@
+<!-- pages/register/register.component.html -->
+<div class="register-wrapper">
+  <div class="register-card">
+
+    <div class="form-panel">
+      <div class="logo">
+        <span class="logo-icon">🎓</span>
+        <span class="logo-name">SPMS</span>
+        <span class="logo-divider">|</span>
+        <span class="logo-subtitle">Student Placement<br>Management System</span>
+      </div>
+
+      <h1 class="heading">Create Account</h1>
+      <p class="sub-heading">Step {{ step }} of 2 — {{ step === 1 ? 'Account Details' : 'Profile Details' }}</p>
+
+      <!-- Progress -->
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width]="step === 1 ? '50%' : '100%'"></div>
+      </div>
+
+      <div *ngIf="errorMsg" class="alert alert-error">⚠ {{ errorMsg }}</div>
+      <div *ngIf="successMsg" class="alert alert-success">✓ {{ successMsg }}</div>
+
+      <!-- Step 1: Account -->
+      <div *ngIf="step === 1">
+        <div class="field-group">
+          <label class="field-label">Role</label>
+          <div class="role-toggle">
+            <button [class.active]="role==='student'" (click)="role='student'">🎓 Student</button>
+            <button [class.active]="role==='company'" (click)="role='company'">🏢 Company</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">{{ role === 'company' ? 'Company Name' : 'Full Name' }}</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" class="input-field"
+              [placeholder]="role==='company' ? 'Enter company name' : 'Enter your full name'" [(ngModel)]="name" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Email</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉</span>
+            <input type="email" class="input-field" placeholder="Enter your email" [(ngModel)]="email" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input [type]="showPassword ? 'text' : 'password'" class="input-field" placeholder="Min 6 characters"
+              [(ngModel)]="password" />
+            <button class="eye-btn" (click)="showPassword=!showPassword">{{ showPassword ? '🙈' : '👁' }}</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Confirm Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input [type]="showConfirm ? 'text' : 'password'" class="input-field" placeholder="Re-enter password"
+              [(ngModel)]="confirmPassword" />
+            <button class="eye-btn" (click)="showConfirm=!showConfirm">{{ showConfirm ? '🙈' : '👁' }}</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" (click)="nextStep()">Next →</button>
+      </div>
+
+      <!-- Step 2: Profile - Student -->
+    <!-- Step 2: Profile - Student -->
+<div *ngIf="step === 2 && role === 'student'">
+
+  <!-- Phone & Department -->
+  <div class="two-col">
+    <div class="field-group">
+      <label class="field-label">Phone</label>
+      <div class="input-wrapper">
+        <span class="input-icon">📞</span>
+        <input
+          type="text"
+          class="input-field"
+          placeholder="Phone Number"
+          [(ngModel)]="phone">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Department</label>
+      <div class="input-wrapper">
+        <span class="input-icon">🏫</span>
+       <input type="text" class="input-field" placeholder="e.g. Computer Science" [(ngModel)]="department" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Register No & Gender -->
+  <div class="two-col">
+    <div class="field-group">
+      <label class="field-label">Register Number</label>
+      <div class="input-wrapper">
+        <span class="input-icon">🆔</span>
+        <input
+          type="text"
+          class="input-field"
+          placeholder="22IT001"
+          [(ngModel)]="rollNo">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Gender</label>
+      <div class="input-wrapper">
+        <span class="input-icon">👤</span>
+        <select class="input-field" [(ngModel)]="gender">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Batch & CGPA -->
+  <div class="two-col">
+    <div class="field-group">
+      <label class="field-label">Batch/Year</label>
+      <div class="input-wrapper">
+        <span class="input-icon">📅</span>
+        <input type="text" class="input-field" placeholder="e.g. 2024" [(ngModel)]="batch" />
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">CGPA</label>
+      <div class="input-wrapper">
+        <span class="input-icon">⭐</span>
+        <input type="number" class="input-field" placeholder="e.g. 8.5" step="0.1" min="0" max="10" [(ngModel)]="cgpa" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 10th & 12th -->
+  <div class="two-col">
+    <div class="field-group">
+      <label class="field-label">10th Percentage</label>
+      <div class="input-wrapper">
+        <span class="input-icon">📖</span>
+        <input
+          type="number"
+          class="input-field" placeholder="eg.80 or 90"
+          [(ngModel)]="tenthPercent"/>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">12th Percentage</label>
+      <div class="input-wrapper">
+        <span class="input-icon">📘</span>
+        <input
+          type="number"
+          class="input-field" placeholder="eg.80 or 90"
+          [(ngModel)]="twelthPercent"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <div class="field-group">
+    <label class="field-label">Skills</label>
+    <div class="input-wrapper">
+      <span class="input-icon">💡</span>
+      <input
+        type="text"
+        class="input-field"
+        placeholder="Angular, Java, Python"
+        [(ngModel)]="skills">
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-secondary" (click)="step=1">
+      ← Back
+    </button>
+
+    <button
+      class="btn-primary"
+      (click)="onRegister()"
+      [disabled]="isLoading">
+
+      <span *ngIf="!isLoading">Register</span>
+      <span *ngIf="isLoading" class="spinner"></span>
+
+    </button>
+  </div>
+
+</div>
+
+        <!-- Step 2: Profile - Company -->
+        <div *ngIf="step === 2 && role === 'company'">
+          <div class="two-col">
+            <div class="field-group">
+              <label class="field-label">Phone</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📞</span>
+                <input type="text" class="input-field" placeholder="Phone number" [(ngModel)]="companyPhone" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Industry</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🏭</span>
+                <input type="text" class="input-field" placeholder="e.g. IT Services" [(ngModel)]="industry" />
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Website</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🌐</span>
+              <input type="url" class="input-field" placeholder="https://yourcompany.com" [(ngModel)]="website" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Description</label>
+            <textarea class="textarea-field" rows="3" placeholder="Brief description of your company..."
+              [(ngModel)]="description"></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-secondary" (click)="step=1">← Back</button>
+            <button class="btn-primary" (click)="onRegister()" [disabled]="isLoading">
+              <span *ngIf="!isLoading">Register</span>
+              <span *ngIf="isLoading" class="spinner"></span>
+            </button>
+          </div>
+        </div>
+
+        <p class="login-text">Already have an account? <a routerLink="/login" class="login-link">Login here</a></p>
+      </div>
+
+      <div class="illustration-panel">
+        <div class="circle-bg"></div>
+        <div class="illus-content">
+          <div class="illus-icon">🎓</div>
+          <h3>Join SPMS Today</h3>
+          <p>Connect students with top companies through our placement management platform.</p>
+          <div class="stats-row">
+            <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Students</span></div>
+            <div class="stat"><span class="stat-num">100+</span><span class="stat-label">Companies</span></div>
+            <div class="stat"><span class="stat-num">300+</span><span class="stat-label">Placed</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

@@ -1,0 +1,92 @@
+<div class="settings-page">
+
+  <h2>Settings</h2>
+
+  <div class="tabs">
+    <button [class.active]="activeTab === 'profile'" (click)="setTab('profile')">Profile</button>
+    <button [class.active]="activeTab === 'security'" (click)="setTab('security')">Security</button>
+    <button [class.active]="activeTab === 'notifications'" (click)="setTab('notifications')">Notifications</button>
+  </div>
+
+  <div class="save-msg" *ngIf="saveMessage">{{ saveMessage }}</div>
+
+  <!-- PROFILE TAB -->
+  <div class="tab-content" *ngIf="activeTab === 'profile'">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" [(ngModel)]="profile.fullName" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="profile.email" />
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" [(ngModel)]="profile.phone" />
+      </div>
+      <div class="form-group">
+        <label>Department</label>
+        <input type="text" [(ngModel)]="profile.department" />
+      </div>
+      <div class="form-group">
+        <label>Roll Number</label>
+        <input type="text" [(ngModel)]="profile.rollNumber" />
+      </div>
+    </div>
+    <button class="save-btn" (click)="saveProfile()">Save Changes</button>
+  </div>
+
+  <!-- SECURITY TAB -->
+  <div class="tab-content" *ngIf="activeTab === 'security'">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Current Password</label>
+        <input type="password" [(ngModel)]="passwords.current" />
+      </div>
+      <div class="form-group">
+        <label>New Password</label>
+        <input type="password" [(ngModel)]="passwords.newPassword" />
+      </div>
+      <div class="form-group">
+        <label>Confirm New Password</label>
+        <input type="password" [(ngModel)]="passwords.confirm" />
+      </div>
+    </div>
+    <button class="save-btn" (click)="changePassword()">Change Password</button>
+  </div>
+
+  <!-- NOTIFICATIONS TAB -->
+  <div class="tab-content" *ngIf="activeTab === 'notifications'">
+    <div class="toggle-row">
+      <span>Email alerts for new company messages</span>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="prefs.emailAlerts" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <span>Interview reminders</span>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="prefs.interviewReminders" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <span>Offer alerts</span>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="prefs.offerAlerts" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <span>General placement drive updates</span>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="prefs.generalUpdates" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <button class="save-btn" (click)="savePreferences()">Save Preferences</button>
+  </div>
+
+</div>

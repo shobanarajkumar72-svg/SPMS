@@ -1,0 +1,200 @@
+<!-- HEADER -->
+
+<div>
+  <h2>Notifications</h2>
+  <p>Your latest placement updates</p>
+</div>
+
+<div class="header-right">
+
+  <span class="badge" *ngIf="unreadCount > 0">
+    {{ unreadCount }} Unread
+  </span>
+
+  <button
+    class="read-all-btn"
+    (click)="markAllAsRead()"
+    *ngIf="notifications.length">
+
+    Mark All Read
+
+  </button>
+
+</div>
+
+
+<!-- EMPTY NOTIFICATION -->
+
+<div
+  class="empty-state"
+  *ngIf="notifications.length === 0">
+
+  <div class="empty-icon">
+    🔔
+  </div>
+
+  <h3>No Notifications</h3>
+
+  <p>
+    You don't have any notifications yet.
+  </p>
+
+</div>
+
+
+<!-- NOTIFICATION LIST -->
+
+<div
+  class="notification-card"
+  *ngFor="let n of notifications"
+  [class.unread]="!n.isRead"
+  (click)="markAsRead(n)">
+
+  <div class="icon">
+    {{ getIcon(n.type) }}
+  </div>
+
+  <div class="content">
+
+    <div class="top-row">
+
+      <h4>
+        {{ n.subject }}
+      </h4>
+
+      <small>
+        {{ formatDate(n.date) }}
+      </small>
+
+    </div>
+
+    <p class="company">
+      {{ n.companyName }}
+    </p>
+
+    <p class="message">
+      {{ n.message }}
+    </p>
+
+  </div>
+
+
+  <!-- DELETE BUTTON -->
+
+  <button
+    type="button"
+    class="delete-btn"
+    (click)="deleteNotification(n.id); $event.stopPropagation()">
+
+    🗑
+
+  </button>
+
+</div>
+
+
+<!-- OFFER LETTER -->
+
+<div
+  class="offer-card"
+  *ngFor="let offer of offers">
+
+  <h3>
+    {{ offer.companyName }}
+  </h3>
+
+  <p>
+    <b>Job Title :</b>
+    {{ offer.jobTitle }}
+  </p>
+
+  <p>
+    <b>Salary :</b>
+    {{ offer.salary }}
+  </p>
+
+  <p>
+    <b>Joining Date :</b>
+    {{ offer.joiningDate }}
+  </p>
+
+  <p>
+    <b>Message :</b>
+  </p>
+
+  <p>
+    {{ offer.message }}
+  </p>
+
+  <button
+    type="button"
+    class="download-btn"
+    (click)="downloadOfferLetter(offer)">
+
+    📥 Download Offer Letter
+
+  </button>
+
+</div>
+
+
+<!-- DELETE CONFIRMATION POPUP -->
+
+<div
+  class="confirm-overlay"
+  *ngIf="showDeleteConfirm">
+
+  <div
+    class="confirm-box"
+    (click)="$event.stopPropagation()">
+
+    <div class="confirm-icon">
+      🗑️
+    </div>
+
+    <h3>
+      Delete Notification?
+    </h3>
+
+    <p>
+      Are you sure you want to delete this notification?
+    </p>
+
+    <div class="confirm-buttons">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="cancelDeleteNotification()">
+
+        Cancel
+
+      </button>
+
+      <button
+        type="button"
+        class="confirm-delete-btn"
+        (click)="confirmDeleteNotification()">
+
+        Delete
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+  class="toast"
+  *ngIf="showToast"
+  [class.success]="toastType === 'success'"
+  [class.error]="toastType === 'error'">
+
+  {{ toastMessage }}
+
+</div>

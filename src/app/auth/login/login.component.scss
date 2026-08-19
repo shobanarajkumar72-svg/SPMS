@@ -1,0 +1,535 @@
+/* login.component.css */
+
+:host {
+    display: block;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ── Layout ─────────────────────────────────── */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f1fa;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-details {
+    display: flex;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 48px rgba(59, 73, 223, 0.10);
+    overflow: hidden;
+    width: 100%;
+    max-width: 1000px;
+    min-height: 580px;
+}
+
+/* ── Left: Form Panel ────────────────────────── */
+.form-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 56px;
+    background: #fff;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* ── Logo ────────────────────────────────────── */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 36px;
+}
+
+.logo-icon {
+    font-size: 26px;
+}
+
+.logo-name {
+    font-size: 21px;
+    font-weight: 700;
+    color: #3b49df;
+    letter-spacing: -0.5px;
+}
+
+.logo-divider {
+    color: #ccc;
+    font-size: 20px;
+    padding: 0 4px;
+}
+
+.logo-subtitle {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.4;
+}
+
+/* ── Headings ────────────────────────────────── */
+.heading {
+    font-size: 30px;
+    font-weight: 800;
+    color: #111;
+    margin: 0 0 6px;
+    letter-spacing: -0.5px;
+}
+
+.sub-heading {
+    font-size: 14px;
+    color: #888;
+    margin: 0 0 26px;
+}
+
+/* ── Form ────────────────────────────────────── */
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.field-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 7px;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #e5e7f0;
+    border-radius: 10px;
+    background: #fafafd;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.input-wrapper:focus-within {
+    border-color: #3b49df;
+    box-shadow: 0 0 0 3px rgba(59, 73, 223, 0.1);
+    background: #fff;
+}
+
+.input-icon {
+    padding: 0 12px;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.input-field {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 13px 12px 13px 0;
+    font-size: 14px;
+    color: #222;
+    min-width: 0;
+}
+
+.input-field::placeholder {
+    color: #bbb;
+}
+
+.eye-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 14px;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s;
+    flex-shrink: 0;
+}
+
+.eye-btn:hover {
+    color: #3b49df;
+}
+
+/* ── Options Row ──────────────────────────────── */
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.remember-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    color: #444;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: #3b49df;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.forgot-link {
+    font-size: 13.5px;
+    color: #3b49df;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+}
+
+.forgot-link:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+/* ── Login Button ─────────────────────────────── */
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #3b49df;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 14px rgba(59, 73, 223, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    box-sizing: border-box;
+}
+
+.btn-login:hover:not(:disabled) {
+    background: #2f3cc0;
+    box-shadow: 0 6px 20px rgba(59, 73, 223, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-login:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-login:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* ── Spinner ─────────────────────────────────── */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Divider ─────────────────────────────────── */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 16px;
+    color: #bbb;
+    font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e8e8f0;
+}
+
+/* ── Social Buttons ───────────────────────────── */
+.social-btns {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.btn-social {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1.5px solid #e5e7f0;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-social:hover {
+    border-color: #3b49df;
+    box-shadow: 0 2px 10px rgba(59, 73, 223, 0.1);
+    background: #fafaff;
+}
+
+/* ── Register ─────────────────────────────────── */
+.register-text {
+    text-align: center;
+    font-size: 13.5px;
+    color: #888;
+    margin: 0;
+}
+
+.register-link {
+    color: #3b49df;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+    transition: opacity 0.15s;
+}
+
+.register-link:hover {
+    opacity: 0.75;
+    text-decoration: underline;
+}
+
+/* ── Right: Illustration Panel ────────────────── */
+.illustration-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f1fa;
+    position: relative;
+    overflow: hidden;
+    min-width: 300px;
+}
+
+.circle-bg {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.illustration-placeholder {
+    position: relative;
+    z-index: 1;
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════════════ */
+
+/* ── Desktop Large (1200px+) ─────────────────── */
+@media (min-width: 1200px) {
+    .login-details {
+        max-width: 1100px;
+    }
+
+    .form-panel {
+        padding: 56px 72px;
+    }
+}
+
+/* ── Desktop / Laptop (901px – 1199px) ──────── */
+@media (min-width: 901px) and (max-width: 1199px) {
+    .login-details {
+        max-width: 900px;
+    }
+
+    .form-panel {
+        padding: 44px 48px;
+    }
+
+    .illustration-placeholder svg {
+        width: 260px;
+        height: 310px;
+    }
+}
+
+/* ── Tablet Landscape (769px – 900px) ────────── */
+@media (min-width: 769px) and (max-width: 900px) {
+    .login-details {
+        max-width: 780px;
+    }
+
+    .form-panel {
+        padding: 36px 40px;
+    }
+
+    .illustration-panel {
+        min-width: 240px;
+    }
+
+    .circle-bg {
+        width: 320px;
+        height: 320px;
+    }
+
+    .illustration-placeholder svg {
+        width: 210px;
+        height: 260px;
+    }
+
+    .heading {
+        font-size: 26px;
+    }
+}
+
+/* ── Tablet Portrait (481px – 768px) ─────────── */
+@media (min-width: 481px) and (max-width: 768px) {
+    .login-wrapper {
+        padding: 16px;
+        align-items: center;
+    }
+
+    .login-details {
+        flex-direction: column;
+        max-width: 520px;
+        min-height: unset;
+        border-radius: 20px;
+    }
+
+    .illustration-panel {
+        display: flex;
+        min-width: unset;
+        min-height: 200px;
+        border-radius: 0 0 20px 20px;
+        padding: 20px;
+    }
+
+    .circle-bg {
+        width: 260px;
+        height: 260px;
+    }
+
+    .illustration-placeholder svg {
+        width: 180px;
+        height: 220px;
+    }
+
+    .form-panel {
+        padding: 36px 40px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .heading {
+        font-size: 26px;
+    }
+
+    .logo {
+        margin-bottom: 24px;
+    }
+}
+
+/* ── Mobile (up to 480px) ─────────────────────── */
+@media (max-width: 480px) {
+    .login-wrapper {
+        padding: 0;
+        align-items: stretch;
+        min-height: 100vh;
+    }
+
+    .login-details {
+        flex-direction: column;
+        border-radius: 0;
+        box-shadow: none;
+        min-height: 100vh;
+        max-width: 100%;
+    }
+
+    .illustration-panel {
+        display: none;
+    }
+
+    .form-panel {
+        padding: 36px 24px 40px;
+        flex: 1;
+        border-radius: 0;
+        justify-content: flex-start;
+        padding-top: 48px;
+    }
+
+    .heading {
+        font-size: 26px;
+    }
+
+    .sub-heading {
+        font-size: 13px;
+        margin-bottom: 22px;
+    }
+
+    .logo {
+        margin-bottom: 32px;
+    }
+
+    .social-btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-social {
+        width: 100%;
+    }
+
+    .form-options {
+        flex-direction: row;
+    }
+}
+
+/* ── Mobile Small (up to 360px) ─────────────── */
+@media (max-width: 360px) {
+    .form-panel {
+        padding: 32px 16px 36px;
+    }
+
+    .heading {
+        font-size: 22px;
+    }
+
+    .logo-name {
+        font-size: 18px;
+    }
+
+    .btn-login {
+        font-size: 14px;
+        min-height: 46px;
+    }
+}

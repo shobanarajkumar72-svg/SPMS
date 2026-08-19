@@ -1,0 +1,75 @@
+<div class="page-container">
+
+  <h2>Send Offer Letter</h2>
+
+  <div class="form-group">
+<div class="form-group" *ngIf="auth.isAdmin()">
+
+  <label>Select Company</label>
+
+  <select [(ngModel)]="selectedCompanyId">
+
+    <option value="">Select Company</option>
+
+    <option *ngFor="let c of companies" [value]="c.id">
+
+      {{ c.name }}
+
+    </option>
+
+  </select>
+
+</div>
+    <label>Select Student</label>
+
+    <select [(ngModel)]="selectedStudentId">
+
+      <option value="">Select Student</option>
+
+      <option *ngFor="let s of students" [value]="s.id">
+        {{ s.name }} - {{ s.department }}
+      </option>
+
+    </select>
+
+  </div>
+
+  <div class="form-group">
+    <label>Job Title</label>
+    <input type="text" [(ngModel)]="jobTitle">
+  </div>
+
+  <div class="form-group">
+    <label>Salary</label>
+    <input type="text" [(ngModel)]="salary">
+  </div>
+
+  <div class="form-group">
+    <label>Joining Date</label>
+    <input type="date" [(ngModel)]="joiningDate">
+  </div>
+
+  <div class="form-group">
+    <label>Offer Message</label>
+    <textarea rows="5" [(ngModel)]="message"></textarea>
+  </div>
+
+  <button (click)="sendOffer()">
+    Send Offer Letter
+  </button>
+
+  <div
+  class="toast"
+  *ngIf="showToaster"
+  [ngClass]="toasterType">
+
+  <span class="toast-icon">
+    {{ toasterType === 'success' ? '✓' : '!' }}
+  </span>
+
+  <span class="toast-message">
+    {{ toasterMessage }}
+  </span>
+
+</div>
+</div>

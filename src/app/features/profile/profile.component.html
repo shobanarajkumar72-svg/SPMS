@@ -1,0 +1,237 @@
+<!-- ================= ADMIN ================= -->
+
+<div *ngIf="user?.role === 'admin'" class="profile-container">
+
+  <h2>Administrator Profile</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <label>Name</label>
+      <p>{{ user.name }}</p>
+    </div>
+
+    <div class="card">
+      <label>Email</label>
+      <p>{{ user.email }}</p>
+    </div>
+
+    <div class="card">
+      <label>Role</label>
+      <p>Administrator</p>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= STUDENT ================= -->
+
+<div *ngIf="user?.role === 'student' && student" class="profile-container">
+
+  <div class="header-info">
+    <h2>{{ student.name }}</h2>
+    <p>{{ student.department }}</p>
+
+    <span
+      class="status"
+      [ngClass]="latestApplication?.status">
+
+      {{ latestApplication?.status || 'Not Applied' }}
+
+    </span>
+
+  </div>
+
+  <h3>👤 Personal Details</h3>
+
+  <div class="grid">
+
+    <div class="card">
+      <label>Name</label>
+      <p>{{ student.name }}</p>
+    </div>
+
+    <div class="card">
+      <label>Email</label>
+      <p>{{ student.email }}</p>
+    </div>
+
+    <div class="card">
+      <label>Phone</label>
+      <p>{{ student.phone }}</p>
+    </div>
+
+    <div class="card">
+      <label>Gender</label>
+      <p>{{ student.gender }}</p>
+    </div>
+
+    <div class="card">
+      <label>Department</label>
+      <p>{{ student.department }}</p>
+    </div>
+
+    <div class="card">
+      <label>Batch</label>
+      <p>{{ student.batch }}</p>
+    </div>
+
+  </div>
+
+  <h3>🎓 Academic Details</h3>
+
+  <div class="grid">
+
+    <div class="card">
+      <label>10th %</label>
+      <p>{{ student.tenthPercent }}</p>
+    </div>
+
+    <div class="card">
+      <label>12th %</label>
+      <p>{{ student.twelthPercent }}</p>
+    </div>
+
+    <div class="card">
+      <label>CGPA</label>
+      <p>{{ student.cgpa }}</p>
+    </div>
+
+    <div class="card">
+      <label>Register No</label>
+      <p>{{ student.rollNo }}</p>
+    </div>
+
+  </div>
+
+  <h3>💻 Skills</h3>
+
+  <div class="skills">
+
+    <span
+      *ngFor="let skill of student.skills"
+      class="skill">
+
+      {{ skill }}
+
+    </span>
+
+  </div>
+
+  <h3>🏆 Placement Status</h3>
+
+  <div class="grid">
+
+    <div class="card">
+      <label>Status</label>
+      <p>{{ latestApplication?.status || 'Not Applied' }}</p>
+    </div>
+
+    <div class="card">
+      <label>Company</label>
+      <p>{{ latestApplication?.companyName || '-' }}</p>
+    </div>
+
+    <div class="card">
+      <label>Job Role</label>
+      <p>{{ latestApplication?.jobTitle || '-' }}</p>
+    </div>
+
+    <div class="card">
+      <label>Applied Date</label>
+      <p>{{ latestApplication?.appliedAt | date }}</p>
+    </div>
+
+  </div>
+
+  <div class="application-card" *ngIf="applications.length">
+
+    <h3>My Applications</h3>
+
+    <table>
+
+      <tr>
+
+        <th>Company</th>
+
+        <th>Job</th>
+
+        <th>Status</th>
+
+      </tr>
+
+      <tr *ngFor="let app of applications">
+
+        <td>{{ app.companyName }}</td>
+
+        <td>{{ app.jobTitle }}</td>
+
+        <td>
+
+          <span
+            class="badge"
+            [ngClass]="app.status">
+
+            {{ app.status }}
+
+          </span>
+
+        </td>
+
+      </tr>
+
+    </table>
+
+  </div>
+
+</div>
+
+
+<!-- ================= COMPANY ================= -->
+
+<div *ngIf="user?.role === 'company' && company" class="profile-container">
+
+  <h2>🏢 Company Profile</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <label>Company Name</label>
+      <p>{{ company.name }}</p>
+    </div>
+
+    <div class="card">
+      <label>Email</label>
+      <p>{{ company.email }}</p>
+    </div>
+
+    <div class="card">
+      <label>Phone</label>
+      <p>{{ company.phone }}</p>
+    </div>
+
+    <div class="card">
+      <label>Industry</label>
+      <p>{{ company.industry }}</p>
+    </div>
+
+    <div class="card">
+      <label>Website</label>
+      <p>{{ company.website || '-' }}</p>
+    </div>
+
+    <div class="card">
+      <label>Description</label>
+      <p>{{ company.description || '-' }}</p>
+    </div>
+
+    <div class="card">
+      <label>Status</label>
+      <p>{{ company.verified ? 'Verified ✅' : 'Pending' }}</p>
+    </div>
+
+  </div>
+
+</div>

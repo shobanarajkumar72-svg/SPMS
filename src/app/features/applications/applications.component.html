@@ -1,0 +1,1004 @@
+<!-- features/applications/applications.component.html -->
+
+<div class="applications-page">
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Applications</h1>
+      <p class="page-subtitle">
+        Track and manage student job applications
+      </p>
+    </div>
+  </div>
+
+
+  <!-- =========================================================
+       STATS
+  ========================================================== -->
+  <div class="stats-strip">
+
+    <div class="stat-chip">
+      <span class="stat-num">{{ totalCount }}</span>
+      <span class="stat-label">Total</span>
+    </div>
+
+    <div class="stat-chip stat-shortlisted">
+      <span class="stat-num">{{ shortlistedCount }}</span>
+      <span class="stat-label">Shortlisted</span>
+    </div>
+
+    <div class="stat-chip stat-selected">
+      <span class="stat-num">{{ selectedCount }}</span>
+      <span class="stat-label">Selected</span>
+    </div>
+
+    <div class="stat-chip stat-rejected">
+      <span class="stat-num">{{ rejectedCount }}</span>
+      <span class="stat-label">Rejected</span>
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       SEARCH + FILTER
+  ========================================================== -->
+  <div class="controls-row">
+
+    <div class="search-bar">
+
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <line
+          x1="21"
+          y1="21"
+          x2="16.65"
+          y2="16.65"
+        ></line>
+      </svg>
+
+      <input
+        type="text"
+        placeholder="Search by student, company, or job title..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+      />
+
+    </div>
+
+
+    <!-- Job Filter -->
+    <select
+      class="job-filter"
+      [(ngModel)]="jobFilter"
+      (ngModelChange)="onJobFilterChange()"
+    >
+
+      <option value="all">
+        All Jobs
+      </option>
+
+      <option
+        *ngFor="let j of jobs"
+        [value]="j.id"
+      >
+        {{ j.title }} — {{ j.companyName }}
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- =========================================================
+       STATUS FILTER TABS
+  ========================================================== -->
+  <div class="filter-tabs">
+
+    <button
+      *ngFor="let opt of statusOptions"
+      class="filter-tab"
+      [ngClass]="opt.value !== 'all' ? 'tab-' + opt.value : ''"
+      [class.active]="statusFilter === opt.value"
+      (click)="statusFilter = opt.value; onStatusFilterChange()"
+    >
+      {{ opt.label }}
+    </button>
+
+  </div>
+
+
+  <!-- =========================================================
+       APPLICATION TABLE
+  ========================================================== -->
+  <div
+    class="table-wrapper"
+    *ngIf="applications.length > 0; else emptyState"
+  >
+
+    <table class="apps-table">
+
+      <thead>
+
+        <tr>
+
+          <!-- Student -->
+          <th>
+            Student
+          </th>
+
+          <!-- Job -->
+          <th>
+            Job / Company
+          </th>
+
+          <!-- Applied Date -->
+          <th>
+            Applied On
+          </th>
+
+          <!-- Resume -->
+          <th>
+            Resume
+          </th>
+
+          <!-- Status -->
+          <th>
+            Status
+          </th>
+
+          <!-- Actions -->
+          <th
+            class="actions-col"
+            *ngIf="isAdmin"
+          >
+            Actions
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr
+          *ngFor="let a of applications"
+          (click)="openDetail(a)"
+        >
+
+          <!-- =================================================
+               STUDENT
+          ================================================== -->
+          <td>
+
+            <div class="student-cell">
+
+              <div class="avatar">
+                {{ getInitials(a.studentName) }}
+              </div>
+
+              <span>
+                {{ a.studentName }}
+              </span>
+
+            </div>
+
+          </td>
+
+
+          <!-- =================================================
+               JOB / COMPANY
+          ================================================== -->
+          <td>
+
+            <div class="job-cell">
+
+              <span class="job-title-text">
+                {{ a.jobTitle }}
+              </span>
+
+              <span class="company-text">
+                {{ a.companyName }}
+              </span>
+
+            </div>
+
+          </td>
+
+
+          <!-- =================================================
+               APPLIED DATE
+          ================================================== -->
+          <td>
+
+            <span class="date-text">
+              {{ a.appliedAt | date:'mediumDate' }}
+            </span>
+
+          </td>
+
+
+          <!-- =================================================
+               RESUME
+          ================================================== -->
+          <td
+            class="resume-cell"
+            (click)="$event.stopPropagation()"
+          >
+
+            <!-- View Resume -->
+            <button
+              type="button"
+              class="btn-preview"
+              *ngIf="a.resumeData"
+              (click)="viewResume(a)"
+            >
+              View
+            </button>
+
+
+            <!-- Download Resume -->
+            <button
+              type="button"
+              class="btn-primary"
+              *ngIf="a.resumeData"
+              (click)="downloadResume(a)"
+            >
+              Download
+            </button>
+
+
+            <!-- No Resume -->
+            <span
+              *ngIf="!a.resumeData"
+              class="no-resume"
+            >
+              Not Available
+            </span>
+
+          </td>
+
+
+          <!-- =================================================
+               STATUS
+          ================================================== -->
+          <td>
+
+            <span
+              class="status-pill"
+              [ngClass]="'status-' + a.status"
+            >
+              {{ a.status }}
+            </span>
+
+          </td>
+
+
+          <!-- =================================================
+               ACTIONS
+          ================================================== -->
+          <td
+            class="actions-col"
+            *ngIf="isAdmin"
+            (click)="$event.stopPropagation()"
+          >
+
+            <!-- Advance Status -->
+            <button
+              class="advance-btn"
+              *ngIf="canAdvance(a)"
+              (click)="advanceStatus(a)"
+              [title]="'Mark as ' + nextStatusLabel(a)"
+            >
+
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <polyline
+                  points="9 18 15 12 9 6"
+                ></polyline>
+              </svg>
+
+              {{ nextStatusLabel(a) }}
+
+            </button>
+
+
+            <!-- Reject -->
+            <button
+              class="reject-btn"
+              *ngIf="
+                a.status !== 'rejected' &&
+                a.status !== 'selected'
+              "
+              (click)="setStatus(a, 'rejected')"
+              title="Reject"
+            >
+
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+
+                <line
+                  x1="18"
+                  y1="6"
+                  x2="6"
+                  y2="18"
+                ></line>
+
+                <line
+                  x1="6"
+                  y1="6"
+                  x2="18"
+                  y2="18"
+                ></line>
+
+              </svg>
+
+            </button>
+
+
+            <!-- Delete -->
+            <button
+              class="icon-btn icon-btn-danger"
+              (click)="confirmDelete(a.id)"
+              title="Delete"
+            >
+
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+
+                <polyline
+                  points="3 6 5 6 21 6"
+                ></polyline>
+
+                <path
+                  d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                ></path>
+
+              </svg>
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- =========================================================
+       EMPTY STATE
+  ========================================================== -->
+  <ng-template #emptyState>
+
+    <div class="empty-state">
+
+      <svg
+        width="64"
+        height="64"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+
+        <path
+          d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+        ></path>
+
+        <polyline
+          points="14 2 14 8 20 8"
+        ></polyline>
+
+        <line
+          x1="9"
+          y1="13"
+          x2="15"
+          y2="13"
+        ></line>
+
+        <line
+          x1="9"
+          y1="17"
+          x2="15"
+          y2="17"
+        ></line>
+
+      </svg>
+
+      <h3>
+        No applications found
+      </h3>
+
+      <p>
+        {{
+          searchTerm ||
+          statusFilter !== 'all' ||
+          jobFilter !== 'all'
+            ? 'Try a different search or filter.'
+            : 'Applications will appear here once students apply to jobs.'
+        }}
+      </p>
+
+    </div>
+
+  </ng-template>
+
+</div>
+
+
+<!-- ============================================================
+     APPLICATION DETAIL MODAL
+============================================================= -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showDetailModal && selectedApp"
+>
+
+  <div
+    class="modal-box"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+
+      <h2>
+        Application Detail
+      </h2>
+
+      <button
+        type="button"
+        class="close-btn"
+        (click)="closeDetail()"
+      >
+
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+
+          <line
+            x1="18"
+            y1="6"
+            x2="6"
+            y2="18"
+          ></line>
+
+          <line
+            x1="6"
+            y1="6"
+            x2="18"
+            y2="18"
+          ></line>
+
+        </svg>
+
+      </button>
+
+    </div>
+
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+
+      <!-- Student Top -->
+      <div class="detail-top">
+
+        <div class="avatar avatar-lg">
+          {{ getInitials(selectedApp.studentName) }}
+        </div>
+
+        <div>
+
+          <h3 class="detail-name">
+            {{ selectedApp.studentName }}
+          </h3>
+
+          <p class="detail-sub">
+            {{ selectedApp.jobTitle }}
+            at
+            {{ selectedApp.companyName }}
+          </p>
+
+        </div>
+
+        <span
+          class="status-pill status-pill-lg"
+          [ngClass]="'status-' + selectedApp.status"
+        >
+          {{ selectedApp.status }}
+        </span>
+
+      </div>
+
+
+      <!-- Application Details -->
+      <div class="detail-grid">
+
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Applied On
+          </span>
+
+          <span class="detail-value">
+            {{ selectedApp.appliedAt | date:'medium' }}
+          </span>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Last Updated
+          </span>
+
+          <span class="detail-value">
+            {{ selectedApp.updatedAt | date:'medium' }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           RESUME SECTION
+      ====================================================== -->
+
+      <div class="detail-section">
+
+        <h3>
+          Resume
+        </h3>
+
+
+        <!-- Resume Available -->
+        <div
+          class="detail-resume"
+          *ngIf="selectedApp.resumeData; else noResumeDetail"
+        >
+
+          <div class="resume-info">
+
+            <div class="resume-icon">
+              📄
+            </div>
+
+            <div>
+
+              <strong>
+                {{
+                  selectedApp.resumeName ||
+                  'Student Resume'
+                }}
+              </strong>
+
+              <small>
+                Resume uploaded successfully
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div class="resume-actions">
+
+            <!-- View -->
+            <button
+              type="button"
+              class="btn-preview"
+              (click)="viewResume(selectedApp)"
+            >
+              View Resume
+            </button>
+
+
+            <!-- Download -->
+            <button
+              type="button"
+              class="btn-primary"
+              (click)="downloadResume(selectedApp)"
+            >
+              Download
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- Resume Not Available -->
+        <ng-template #noResumeDetail>
+
+          <div class="application-warning">
+            ⚠️ Resume not available.
+          </div>
+
+        </ng-template>
+
+      </div>
+
+
+      <!-- =====================================================
+           STATUS PIPELINE
+      ====================================================== -->
+
+      <div
+        class="pipeline"
+        *ngIf="isAdmin"
+      >
+
+        <span class="pipeline-label">
+          Update Status
+        </span>
+
+        <div class="pipeline-steps">
+
+          <button
+            *ngFor="let s of statusFlow"
+            class="pipeline-step"
+            [class.active]="selectedApp.status === s"
+            [class.passed]="
+              statusFlow.indexOf(selectedApp.status) >
+              statusFlow.indexOf(s) ||
+              selectedApp.status === 'selected'
+            "
+            (click)="setStatus(selectedApp, s)"
+          >
+            {{ s }}
+          </button>
+
+
+          <button
+            class="pipeline-step pipeline-reject"
+            [class.active]="selectedApp.status === 'rejected'"
+            (click)="setStatus(selectedApp, 'rejected')"
+          >
+            rejected
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DETAIL MODAL FOOTER
+    ====================================================== -->
+
+    <div class="modal-footer">
+
+      <button
+        type="button"
+        *ngIf="isAdmin"
+        class="btn-danger-outline"
+        (click)="confirmDelete(selectedApp.id)"
+      >
+        Delete Application
+      </button>
+
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="closeDetail()"
+      >
+        Done
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     RESUME VIEW MODAL
+============================================================= -->
+
+<div
+  class="modal-overlay resume-overlay"
+  *ngIf="showResumeModal"
+>
+
+  <div
+    class="modal-container resume-modal"
+    (click)="$event.stopPropagation()"
+    *ngIf="resumeApp"
+  >
+
+    <!-- Header -->
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Resume
+        </h2>
+
+        <p>
+          {{
+            resumeApp.resumeName ||
+            'Student Resume'
+          }}
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="modal-close"
+        (click)="closeResume()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- Resume Body -->
+    <div class="modal-body resume-viewer-body">
+
+      <!-- PDF Resume -->
+      <div
+        class="resume-pdf-viewer"
+        *ngIf="isPdfResume(resumeApp)"
+      >
+
+        <iframe
+          [src]="resumeApp.resumeData"
+          title="Student Resume"
+        ></iframe>
+
+      </div>
+
+
+      <!-- Non PDF Resume -->
+      <div
+        class="resume-non-pdf"
+        *ngIf="!isPdfResume(resumeApp)"
+      >
+
+        <div class="resume-large-icon">
+          📄
+        </div>
+
+        <h3>
+          {{
+            resumeApp.resumeName ||
+            'Resume'
+          }}
+        </h3>
+
+        <p>
+          Preview is available only for PDF resumes.
+        </p>
+
+        <button
+          type="button"
+          class="btn-primary"
+          (click)="downloadResume(resumeApp)"
+        >
+          Download Resume
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- Resume Footer -->
+    <div class="modal-footer">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="closeResume()"
+      >
+        Close
+      </button>
+
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="downloadResume(resumeApp)"
+      >
+        Download
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     DELETE CONFIRM MODAL
+============================================================= -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showDeleteConfirm"
+>
+
+  <div
+    class="confirm-box"
+    (click)="$event.stopPropagation()"
+  >
+
+    <div class="confirm-icon">
+
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+
+        <path
+          d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+        ></path>
+
+        <line
+          x1="12"
+          y1="9"
+          x2="12"
+          y2="13"
+        ></line>
+
+        <line
+          x1="12"
+          y1="17"
+          x2="12.01"
+          y2="17"
+        ></line>
+
+      </svg>
+
+    </div>
+
+
+    <h3>
+      Delete Application?
+    </h3>
+
+    <p>
+      This action cannot be undone.
+    </p>
+
+
+    <div class="confirm-actions">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="cancelDelete()"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="btn-danger"
+        (click)="performDelete()"
+      >
+        Delete
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     TOAST
+============================================================= -->
+
+<div
+  class="toast"
+  [class.toast-show]="showToast"
+  [class.toast-error]="toastType === 'error'"
+>
+
+  <svg
+    *ngIf="toastType === 'success'"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+  >
+    <polyline
+      points="20 6 9 17 4 12"
+    ></polyline>
+  </svg>
+
+
+  <svg
+    *ngIf="toastType === 'error'"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+  >
+
+    <circle
+      cx="12"
+      cy="12"
+      r="10"
+    ></circle>
+
+    <line
+      x1="12"
+      y1="8"
+      x2="12"
+      y2="12"
+    ></line>
+
+    <line
+      x1="12"
+      y1="16"
+      x2="12.01"
+      y2="16"
+    ></line>
+
+  </svg>
+
+
+  {{ toastMsg }}
+
+</div>

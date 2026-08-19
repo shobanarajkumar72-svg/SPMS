@@ -1,0 +1,124 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Welcome back, {{ user?.name }}! 👋</div>
+      <div class="page-subtitle">{{ user?.role | titlecase }} — Here's your overview</div>
+    </div>
+  </div>
+
+  <!-- Admin Stats -->
+  <div *ngIf="auth.isAdmin()">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ studentStats.total }}</div>
+        <div class="stat-label">Total Students</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#10b981">{{ studentStats.placed }}</div>
+        <div class="stat-label">Placed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#f59e0b">{{ studentStats.unplaced }}</div>
+        <div class="stat-label">Unplaced</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#8b5cf6">{{ companies.length }}</div>
+        <div class="stat-label">Companies</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#667eea">{{ openJobs.length }}</div>
+        <div class="stat-label">Open Jobs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#06b6d4">{{ appStats.total }}</div>
+        <div class="stat-label">Applications</div>
+      </div>
+    </div>
+
+    <!-- Placement progress -->
+    <div class="card" style="margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:15px;font-weight:600">Placement Progress</div>
+        <span class="badge badge-green">{{ getPlacementPercent() }}% Placed</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width]="getPlacementPercent() + '%'"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#6b7280">
+        <span>{{ studentStats.placed }} Placed</span>
+        <span>{{ studentStats.unplaced }} Remaining</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Stats -->
+  <div *ngIf="auth.isStudent()">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ recentApps.length }}</div>
+        <div class="stat-label">My Applications</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#10b981">{{ openJobs.length }}</div>
+        <div class="stat-label">Open Jobs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#8b5cf6">{{ companies.length }}</div>
+        <div class="stat-label">Companies</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Company Stats -->
+  <div *ngIf="auth.isCompany()">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ recentApps.length }}</div>
+        <div class="stat-label">Applications Received</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#10b981">{{ appStats.selected }}</div>
+        <div class="stat-label">Selected</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#f59e0b">{{ appStats.shortlisted }}</div>
+        <div class="stat-label">Shortlisted</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <!-- Recent Applications -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Recent Applications</span>
+        <a routerLink="/applications" class="card-link">View All</a>
+      </div>
+      <div *ngFor="let app of recentApps.slice(0,5)" class="app-row">
+        <div>
+          <div class="app-title">{{ app.jobTitle }}</div>
+          <div class="app-sub">{{ app.companyName }}</div>
+        </div>
+        <span [class]="'badge ' + statusClass(app.status)">{{ app.status }}</span>
+      </div>
+      <div *ngIf="!recentApps.length" class="empty-mini">No applications yet.</div>
+    </div>
+
+    <!-- Upcoming Drives -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Upcoming Drives</span>
+        <a routerLink="/drives" class="card-link">View All</a>
+      </div>
+      <div *ngFor="let d of recentDrives" class="drive-row">
+        <div class="drive-icon">🚀</div>
+        <div>
+          <div class="app-title">{{ d.companyName }}</div>
+          <div class="app-sub">{{ d.driveDate | date:'MMM d, y' }} · {{ d.venue }}</div>
+        </div>
+        <span [class]="'badge ' + driveClass(d.status)">{{ d.status }}</span>
+      </div>
+      <div *ngIf="!recentDrives.length" class="empty-mini">No drives scheduled.</div>
+    </div>
+  </div>
+</div>
