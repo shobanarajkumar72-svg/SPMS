@@ -1,5 +1,5 @@
 [build]
-  publish = "dist/student-placement-management-system"
+  publish = "dist/student-placement-management-system/browser"
   command = "npm run build"
 
 [[redirects]]
