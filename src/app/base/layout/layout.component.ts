@@ -13,7 +13,7 @@ import { AuthService } from '../../service/auth.service';
 export class LayoutComponent {
 
 
-  sidebarOpen = true;
+  sidebarOpen = window.innerWidth > 768;
   showLogoutConfirm = false;
   currentRoute = '';
 

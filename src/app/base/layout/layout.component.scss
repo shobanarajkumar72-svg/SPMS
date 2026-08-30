@@ -196,19 +196,28 @@
 
     .sidebar-closed .sidebar {
         width: 0;
+        min-width: 0;
         overflow: hidden;
     }
 
     .main-area {
         width: 100%;
+        max-width: 100%;
         min-width: 0;
-        margin-left: 0;
+        margin: 0;
     }
 
     .topbar {
         width: 100%;
-        padding: 0 15px;
+        min-width: 0;
+        height: 60px;
+        padding: 0 12px;
         box-sizing: border-box;
+    }
+
+    .menu-btn {
+        flex-shrink: 0;
+        font-size: 22px;
     }
 
     .title {
@@ -216,6 +225,7 @@
     }
 
     .top-actions {
+        margin-left: auto;
         gap: 8px;
     }
 
@@ -223,22 +233,29 @@
         display: none;
     }
 
+    .avatar {
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+    }
+
     .content {
         width: 100%;
+        max-width: 100%;
+        min-width: 0;
         box-sizing: border-box;
         padding: 15px;
         overflow-x: hidden;
-    }
-
-    .dash-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        width: 100%;
+        overflow-y: auto;
     }
 
     .footer {
         width: 100%;
+        max-width: 100%;
         box-sizing: border-box;
+        font-size: 11px;
+        text-align: center;
+        padding: 0 10px;
     }
 }
 /* ================================
