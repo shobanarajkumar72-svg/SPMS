@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { NavbarComponent } from './base/navbar/navbar.component';
 import { LayoutComponent } from './base/layout/layout.component';
-import { CompaniesComponent } from './features/companies/companies.component';
 import { authGuard } from './guards/auth.guard';
 export const routes: Routes = [
 

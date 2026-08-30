@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { AuthService } from '../../service/auth.service';
-import { ReportsComponent } from '../../features/reports/reports.component';
 
 @Component({
   selector: 'app-layout',
